@@ -52,6 +52,43 @@ public class Movie {
     @SerializedName("vote_average")
     private float VoteAverage;
 
+    @SerializedName("belongs_to_collection")
+    private MovieCollection Collection;
+
+    @SerializedName("budget")
+    private int Budget;
+
+    @SerializedName("homepage")
+    private String homepage;
+
+    @SerializedName("imdb_id")
+    private String IMDB;
+
+    @SerializedName("production_companies")
+    private List<ProductCompanies> ProductCompaniesList;
+
+    @SerializedName("production_countries")
+    private List<ProductionCountries> ProductionCountriesList;
+
+    @SerializedName("revenue")
+    private int Revenue;
+
+    @SerializedName("runtime")
+    private int Runtime;
+
+    @SerializedName("spoken_languages")
+    private List<SpokenLanguages> SpokenLanguagesList;
+
+    @SerializedName("status")
+    private String Status;
+
+    @SerializedName("tagline")
+    private String TagLine;
+
+    @SerializedName("title")
+    private String Title;
+
+
     public String getPosterPath() {
         String url = String.format(Locale.getDefault(),"%s%s", BuildConfig.POSTER_BASE_URL, PosterPath);
         return url;
@@ -157,6 +194,102 @@ public class Movie {
         VoteAverage = voteAverage;
     }
 
+    public MovieCollection getCollection() {
+        return Collection;
+    }
+
+    public void setCollection(MovieCollection collection) {
+        Collection = collection;
+    }
+
+    public int getBudget() {
+        return Budget;
+    }
+
+    public void setBudget(int budget) {
+        Budget = budget;
+    }
+
+    public String getHomepage() {
+        return homepage;
+    }
+
+    public void setHomepage(String homepage) {
+        this.homepage = homepage;
+    }
+
+    public String getIMDB() {
+        return IMDB;
+    }
+
+    public void setIMDB(String IMDB) {
+        this.IMDB = IMDB;
+    }
+
+    public List<ProductCompanies> getProductCompaniesList() {
+        return ProductCompaniesList;
+    }
+
+    public void setProductCompaniesList(List<ProductCompanies> productCompaniesList) {
+        ProductCompaniesList = productCompaniesList;
+    }
+
+    public List<ProductionCountries> getProductionCountriesList() {
+        return ProductionCountriesList;
+    }
+
+    public void setProductionCountriesList(List<ProductionCountries> productionCountriesList) {
+        ProductionCountriesList = productionCountriesList;
+    }
+
+    public int getRevenue() {
+        return Revenue;
+    }
+
+    public void setRevenue(int revenue) {
+        Revenue = revenue;
+    }
+
+    public int getRuntime() {
+        return Runtime;
+    }
+
+    public void setRuntime(int runtime) {
+        Runtime = runtime;
+    }
+
+    public List<SpokenLanguages> getSpokenLanguagesList() {
+        return SpokenLanguagesList;
+    }
+
+    public void setSpokenLanguagesList(List<SpokenLanguages> spokenLanguagesList) {
+        SpokenLanguagesList = spokenLanguagesList;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
+
+    public String getTagLine() {
+        return TagLine;
+    }
+
+    public void setTagLine(String tagLine) {
+        TagLine = tagLine;
+    }
+
+    public String getTitle() {
+        return Title;
+    }
+
+    public void setTitle(String title) {
+        Title = title;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -173,6 +306,18 @@ public class Movie {
                 ", VoteCount=" + VoteCount +
                 ", HasVideo=" + HasVideo +
                 ", VoteAverage=" + VoteAverage +
+                ", Collection=" + Collection +
+                ", Budget=" + Budget +
+                ", homepage='" + homepage + '\'' +
+                ", IMDB='" + IMDB + '\'' +
+                ", ProductCompaniesList=" + ProductCompaniesList +
+                ", ProductionCountriesList=" + ProductionCountriesList +
+                ", Revenue=" + Revenue +
+                ", Runtime=" + Runtime +
+                ", SpokenLanguagesList=" + SpokenLanguagesList +
+                ", Status='" + Status + '\'' +
+                ", TagLine='" + TagLine + '\'' +
+                ", Title='" + Title + '\'' +
                 '}';
     }
 }

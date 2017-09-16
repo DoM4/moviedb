@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 
 import aumenta.domenico.com.movies.R;
+import aumenta.domenico.com.movies.Utils.LayoutType;
 import aumenta.domenico.com.movies.backend.models.Movie;
 import aumenta.domenico.com.movies.listeners.OnMovieListener;
 
@@ -23,17 +24,18 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieItemHolder> {
 
     List<Movie> movieList;
     OnMovieListener onMovieListener;
-
-    public MoviesAdapter(List<Movie> movieList, OnMovieListener onMovieListener) {
+    String layoutType;
+    public MoviesAdapter(List<Movie> movieList, OnMovieListener onMovieListener, String layoutType) {
         this.movieList = movieList;
         this.onMovieListener = onMovieListener;
+        this.layoutType = layoutType;
     }
 
 
     @Override
     public MovieItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                R.layout.movie_card_view, parent,
+                layoutType.equalsIgnoreCase(LayoutType.GRID) ? R.layout.movie_card_view : R.layout.horizontal_movie_card_view, parent,
                 false).getRoot();
         return new MovieItemHolder(view);
     }

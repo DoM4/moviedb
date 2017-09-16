@@ -23,6 +23,8 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+    public static final String EXTRA_MOVIE_ID = "EXTRA_MOVIE_ID";
+
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
 

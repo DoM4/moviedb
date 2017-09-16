@@ -1,5 +1,6 @@
 package aumenta.domenico.com.movies.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import aumenta.domenico.com.movies.BuildConfig;
 import aumenta.domenico.com.movies.R;
+import aumenta.domenico.com.movies.Utils.LayoutType;
 import aumenta.domenico.com.movies.Utils.Utils;
 import aumenta.domenico.com.movies.adapters.MoviesAdapter;
 import aumenta.domenico.com.movies.backend.ApiManager;
@@ -83,7 +85,7 @@ public class MoviesMainActivity extends BaseActivity implements
                         showMessage(moviesContainerView, e.getLocalizedMessage(), getString(R.string.retry), new OnSnackBarActionListener() {
                             @Override
                             public void onSnackBarActionClicked() {
-
+                                onRefresh();
                             }
                         });
                     }
@@ -106,7 +108,7 @@ public class MoviesMainActivity extends BaseActivity implements
      * Populate RecyclerView and attach ItemHelper to handle delete/swap gestures
      */
     private void setupRecyclerView() {
-        MoviesAdapter moviesAdapter = new MoviesAdapter(movieList,this);
+        MoviesAdapter moviesAdapter = new MoviesAdapter(movieList,this, LayoutType.GRID);
         moviesRecyclerView.setLayoutManager(new GridLayoutManager(MoviesMainActivity.this,2));
         moviesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         moviesRecyclerView.setAdapter(moviesAdapter);
@@ -132,6 +134,8 @@ public class MoviesMainActivity extends BaseActivity implements
 
     @Override
     public void OnMovieClicked(int position, int movieId) {
-        showMessage(moviesContainerView, Integer.toString(movieId),null,null);
+        Intent intent = new Intent(MoviesMainActivity.this,MovieDetailsActivity.class);
+        intent.putExtra(EXTRA_MOVIE_ID,movieId);
+        startActivity(intent);
     }
 }
