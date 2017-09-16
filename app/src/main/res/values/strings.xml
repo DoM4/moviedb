@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Movies</string>
+    <string name="default_error_message">System Error</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="retry">Retry</string>
+    <string name="download_movies">Click Download to download movies</string>
+    <string name="download">Download</string>
+</resources>
