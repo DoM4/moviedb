@@ -4,11 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import aumenta.domenico.com.movies.backend.responses.BaseResponse;
+
 /**
  * Created by domenicoaumenta on 16/09/2017.
  */
 
-public class MovieCollection {
+public class MovieCollection extends BaseResponse {
 
     @SerializedName("id")
     private int MovieCollectionId;

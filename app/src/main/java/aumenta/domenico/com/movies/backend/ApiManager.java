@@ -5,10 +5,14 @@ import android.support.annotation.Nullable;
 
 import java.lang.annotation.Annotation;
 
+import javax.inject.Singleton;
+
 import aumenta.domenico.com.movies.BuildConfig;
 import aumenta.domenico.com.movies.R;
 import aumenta.domenico.com.movies.backend.interfaces.MovieDBService;
 import aumenta.domenico.com.movies.backend.responses.BaseResponse;
+import dagger.Module;
+import dagger.Provides;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Response;
@@ -20,6 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by domenicoaumenta on 16/09/2017.
  */
 
+@Module
 public class ApiManager {
     // Singleton manager
     private static ApiManager instance;
@@ -28,9 +33,9 @@ public class ApiManager {
     // MovieDB Retrofit instance
     private Retrofit moviesRetrofit;
     // Private constructor - creates MovieDB backend
-    private ApiManager(){
-        setupMovieDBBackend();
-    }
+//    private ApiManager(){
+//        setupMovieDBBackend();
+//    }
 
     /**
      * Retrieves MovieDBBackend from ApiManager instance
@@ -68,18 +73,47 @@ public class ApiManager {
         return backend;
     }
 
+//    // Sets up backend for MovieDB
+//    private void setupMovieDBBackend() {
+//
+//        // build retrofit instance with url configured in build flavour
+//        moviesRetrofit = new Retrofit.Builder()
+//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                .baseUrl(BuildConfig.BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        // create backend from retrofit
+//        backend = moviesRetrofit.create(MovieDBService.class);
+//    }
+
     // Sets up backend for MovieDB
-    private void setupMovieDBBackend() {
+    @Provides
+    @Singleton
+    Retrofit setupMovieDBBackend() {
 
         // build retrofit instance with url configured in build flavour
-        moviesRetrofit = new Retrofit.Builder()
+        return new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(BuildConfig.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        // create backend from retrofit
-        backend = moviesRetrofit.create(MovieDBService.class);
+    }
+
+    @Provides
+    @Singleton
+    @SuppressWarnings("unused")
+    public MovieDBService providesMovieDBService(
+            Retrofit retrofit) {
+        return retrofit.create(MovieDBService.class);
+    }
+    @Provides
+    @Singleton
+    @SuppressWarnings("unused")
+    public Service providesService(
+            MovieDBService networkService) {
+        return new Service(networkService);
     }
 
     // Get base response from Error converter

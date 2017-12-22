@@ -6,12 +6,13 @@ import java.util.List;
 import java.util.Locale;
 
 import aumenta.domenico.com.movies.BuildConfig;
+import aumenta.domenico.com.movies.backend.responses.BaseResponse;
 
 /**
  * Created by domenicoaumenta on 16/09/2017.
  */
 
-public class Movie {
+public class Movie extends BaseResponse {
 
     @SerializedName("poster_path")
     private String PosterPath;
@@ -87,7 +88,6 @@ public class Movie {
 
     @SerializedName("title")
     private String Title;
-
 
     public String getPosterPath() {
         String url = String.format(Locale.getDefault(),"%s%s", BuildConfig.POSTER_BASE_URL, PosterPath);

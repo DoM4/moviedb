@@ -16,7 +16,7 @@ public class BaseResponse {
     private String GeneratedIn;
     private List<String> Errors;
 
-    BaseResponse() {}
+    public BaseResponse() {}
 
     public boolean isOk() {
         return Ok;

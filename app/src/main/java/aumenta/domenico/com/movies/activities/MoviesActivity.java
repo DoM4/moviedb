@@ -11,25 +11,27 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import aumenta.domenico.com.movies.BuildConfig;
+import javax.inject.Inject;
+
 import aumenta.domenico.com.movies.R;
 import aumenta.domenico.com.movies.Utils.LayoutType;
 import aumenta.domenico.com.movies.Utils.Utils;
 import aumenta.domenico.com.movies.adapters.MoviesAdapter;
-import aumenta.domenico.com.movies.backend.ApiManager;
+import aumenta.domenico.com.movies.backend.Service;
 import aumenta.domenico.com.movies.backend.models.Movie;
+import aumenta.domenico.com.movies.backend.responses.BaseResponse;
 import aumenta.domenico.com.movies.backend.responses.NowPlayingMoviesResponse;
 import aumenta.domenico.com.movies.listeners.OnMovieListener;
 import aumenta.domenico.com.movies.listeners.OnSnackBarActionListener;
+import aumenta.domenico.com.movies.presenter.MovieMainPresenter;
+import aumenta.domenico.com.movies.views.MovieMainView;
 import butterknife.BindView;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class MoviesMainActivity extends BaseActivity implements
         SwipeRefreshLayout.OnRefreshListener,
         OnMovieListener,
-        OnSnackBarActionListener {
+        OnSnackBarActionListener,
+        MovieMainView{
 
     private final String TAG = getClass().getSimpleName();
 
@@ -43,7 +45,9 @@ public class MoviesMainActivity extends BaseActivity implements
     ConstraintLayout moviesContainerView;
 
     List<Movie> movieList = new ArrayList<>();
-
+    @Inject
+    Service service ;
+    MovieMainPresenter movieMainPresenter;
     @Override
     void setupToolbar() {
         setupToolbarInActivity(getString(R.string.app_name), false);
@@ -57,44 +61,15 @@ public class MoviesMainActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getDeps().inject(this);
         swipeRefreshLayout.setOnRefreshListener(this);
+        movieMainPresenter =new MovieMainPresenter(service,this);
         onRefresh();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-    }
-
-    private void downloadNowPlayingMovies() {
-        resetFeeds();
-        swipeRefreshLayout.setRefreshing(true);
-        ApiManager.api().getNowPlayingMovies(BuildConfig.API_KEY)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<NowPlayingMoviesResponse>() {
-                    @Override
-                    public void onCompleted() {
-                        swipeRefreshLayout.setRefreshing(false);
-                        setupRecyclerView();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        swipeRefreshLayout.setRefreshing(false);
-                        showMessage(moviesContainerView, e.getLocalizedMessage(), getString(R.string.retry), new OnSnackBarActionListener() {
-                            @Override
-                            public void onSnackBarActionClicked() {
-                                onRefresh();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onNext(NowPlayingMoviesResponse nowPlayingMoviesResponse) {
-                        movieList = (nowPlayingMoviesResponse.getNowPlayingMovies());
-                    }
-                });
     }
 
     /**
@@ -117,7 +92,7 @@ public class MoviesMainActivity extends BaseActivity implements
     @Override
     public void onRefresh() {
         if (Utils.isNetworkAvailable(this)) {
-            downloadNowPlayingMovies();
+           movieMainPresenter.getPlayingMovies();
         } else {
             swipeRefreshLayout.setRefreshing(false);
             showMessage(moviesContainerView,
@@ -137,5 +112,31 @@ public class MoviesMainActivity extends BaseActivity implements
         Intent intent = new Intent(MoviesMainActivity.this,MovieDetailsActivity.class);
         intent.putExtra(EXTRA_MOVIE_ID,movieId);
         startActivity(intent);
+    }
+
+    @Override
+    public void showWait() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void hideWait() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onFailure(String errorMessage) {
+        showMessage(moviesContainerView,
+                errorMessage,
+                getString(R.string.retry)
+                , this);
+    }
+
+    @Override
+    public void getPlayingMovies(BaseResponse response) {
+        resetFeeds();
+        NowPlayingMoviesResponse nowPlayingMoviesResponse = (NowPlayingMoviesResponse) response;
+        movieList = (nowPlayingMoviesResponse.getNowPlayingMovies());
+        setupRecyclerView();
     }
 }

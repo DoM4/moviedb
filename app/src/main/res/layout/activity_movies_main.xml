@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="aumenta.domenico.com.movies.activities.MoviesMainActivity"
+    tools:context="aumenta.domenico.com.movies.activities.MoviesActivity"
     android:id="@+id/movies_container_view">
     <include layout="@layout/toolbar" android:id="@+id/toolbar"/>
     <android.support.v4.widget.SwipeRefreshLayout

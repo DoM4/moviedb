@@ -12,6 +12,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import aumenta.domenico.com.movies.R;
+import aumenta.domenico.com.movies.backend.ApiManager;
+import aumenta.domenico.com.movies.deps.DaggerDeps;
+import aumenta.domenico.com.movies.deps.Deps;
 import aumenta.domenico.com.movies.listeners.OnSnackBarActionListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +35,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     public TextView toolbarTitle;
 
     public Snackbar snackbar;
+
+    Deps deps;
+
     abstract void setupToolbar();
 
     @LayoutRes
@@ -41,8 +47,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DataBindingUtil.setContentView(this,getLayout());
+        deps = DaggerDeps.builder().apiManager(new ApiManager()).build();
         ButterKnife.bind(this);
         setupToolbar();
+    }
+
+    public Deps getDeps() {
+        return deps;
     }
 
     public void setupToolbarInActivity(String title,boolean showBackArrow){

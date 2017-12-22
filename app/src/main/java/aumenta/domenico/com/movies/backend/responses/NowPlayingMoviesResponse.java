@@ -10,7 +10,7 @@ import aumenta.domenico.com.movies.backend.models.Movie;
  * Created by domenicoaumenta on 16/09/2017.
  */
 
-public class NowPlayingMoviesResponse {
+public class NowPlayingMoviesResponse extends BaseResponse {
     @SerializedName("page")
     private int Page;
 
