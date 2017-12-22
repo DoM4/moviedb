@@ -24,14 +24,14 @@ import aumenta.domenico.com.movies.backend.responses.NowPlayingMoviesResponse;
 import aumenta.domenico.com.movies.listeners.OnMovieListener;
 import aumenta.domenico.com.movies.listeners.OnSnackBarActionListener;
 import aumenta.domenico.com.movies.presenter.MovieMainPresenter;
-import aumenta.domenico.com.movies.views.MovieMainView;
+import aumenta.domenico.com.movies.views.MovieView;
 import butterknife.BindView;
 
-public class MoviesMainActivity extends BaseActivity implements
+public class MoviesActivity extends BaseActivity implements
         SwipeRefreshLayout.OnRefreshListener,
         OnMovieListener,
         OnSnackBarActionListener,
-        MovieMainView{
+        MovieView {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -84,7 +84,7 @@ public class MoviesMainActivity extends BaseActivity implements
      */
     private void setupRecyclerView() {
         MoviesAdapter moviesAdapter = new MoviesAdapter(movieList,this, LayoutType.GRID);
-        moviesRecyclerView.setLayoutManager(new GridLayoutManager(MoviesMainActivity.this,2));
+        moviesRecyclerView.setLayoutManager(new GridLayoutManager(MoviesActivity.this,2));
         moviesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         moviesRecyclerView.setAdapter(moviesAdapter);
     }
@@ -109,7 +109,7 @@ public class MoviesMainActivity extends BaseActivity implements
 
     @Override
     public void OnMovieClicked(int position, int movieId) {
-        Intent intent = new Intent(MoviesMainActivity.this,MovieDetailsActivity.class);
+        Intent intent = new Intent(MoviesActivity.this,MovieDetailsActivity.class);
         intent.putExtra(EXTRA_MOVIE_ID,movieId);
         startActivity(intent);
     }
@@ -133,7 +133,7 @@ public class MoviesMainActivity extends BaseActivity implements
     }
 
     @Override
-    public void getPlayingMovies(BaseResponse response) {
+    public void getResponse(BaseResponse response) {
         resetFeeds();
         NowPlayingMoviesResponse nowPlayingMoviesResponse = (NowPlayingMoviesResponse) response;
         movieList = (nowPlayingMoviesResponse.getNowPlayingMovies());
